@@ -1,3 +1,4 @@
+<app-navigation></app-navigation>
 <div class="p-4">
   <h2>Get started</h2>
   <form [formGroup]="loginForm" [class.loading]="isFormLoading">
@@ -18,3 +19,5 @@
     </button>
   </form>
 </div>
+<div class="alert-success p-4" *ngIf="isSuccess">Successfully logged in. Redirecting you to Todos in a second.</div>
+<div class="alert-danger p-4" *ngIf="isError">Oops, an error occurred! Please contact support@taxiapp.com</div>

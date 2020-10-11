@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {delay} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {IAuthService} from '../../shared/auth/auth.interface';
 
 @Component({
   selector: 'app-login-page',
@@ -7,17 +10,22 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
-  isFormLoading = true;
+  isFormLoading = false;
   loginForm: FormGroup;
 
+  isSuccess = false;
+  isError = false;
+
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: IAuthService
   ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['eldar.jah@gmail.com', [Validators.required, Validators.email]],
+      password: ['password', [Validators.required, Validators.minLength(3)]],
     });
   }
 
@@ -25,17 +33,25 @@ export class LoginPageComponent implements OnInit {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
       this.isFormLoading = true;
-      setTimeout(() => {
-        // this.isFormLoading = false;
-      }, 5000);
+      this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
+        .pipe(delay(2000))
+        .subscribe(
+          this.onLoginSuccess,
+          this.onLoginError
+        );
     }
   }
 
-  get email() {
-    return this.loginForm.get('email');
+  onLoginSuccess = (data) => {
+    // display success and await for a second before redirect
+    this.isSuccess = true;
+    setTimeout(() => {
+      this.router.navigate(['/todos']);
+    }, 1000);
   }
 
-  get password() {
-    return this.loginForm.get('password');
+  onLoginError = (error) => {
+    this.isFormLoading = false;
+    this.isError = true;
   }
 }

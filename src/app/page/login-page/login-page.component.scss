@@ -1,0 +1,12 @@
+form {
+  &.loading {
+    opacity: .4;
+    pointer-events: none;
+  }
+  button.btn.btn-success {
+    display: flex;
+    min-width: 100px;
+    justify-content: center;
+    align-items: center;
+  }
+}

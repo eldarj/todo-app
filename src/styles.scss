@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@import "src/assets/scss/font-awesome";
+@import "src/assets/scss/form-validation";
+.body-wrapper {
+  width: 400px;
+  margin: 20px auto;
+}

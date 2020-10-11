@@ -1,0 +1,7 @@
+.form-control {
+  &.ng-valid, &.ng-untouched {
+    + span.text-danger {
+      display: none;
+    }
+  }
+}
